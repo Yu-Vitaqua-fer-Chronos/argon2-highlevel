@@ -109,10 +109,10 @@ proc argon2Hash*(password: string, options: sink Argon2Options = defaultArgon2Op
     ## Hashes the provided password using the Argon2 algorithm and returns the complete encoded hash string.
     ## If not additional options are passed, the following defaults will be used:
     ##   variant: Argon2Variant.ID
-    ##   iterations: 1
-    ##   memory: 65535
-    ##   threadCount: <the processor's thread count>
-    ##   length: 24
+    ##   iterations: 2
+    ##   memory: 4096
+    ##   threadCount: 2
+    ##   length: 32
     ##   salt: <random 16 byte salt>
     ## Leave salt blank to use randomly generated 16 byte salt.
     
