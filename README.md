@@ -15,7 +15,7 @@ Example usage:
 ---
 ### Detailed:
 ```nim
-import argon2_highlevel
+import argon2_highlevel/blocking
 
 let hash = argon2Hash("drowssap", Argon2Options(
     variant: Argon2Variant.I,
@@ -34,7 +34,7 @@ Output:
 ---
 ### Simplified:
 ```nim
-import argon2_highlevel
+import argon2_highlevel/blocking
 
 echo argon2Hash("drowssap")
 # defaults to using Argon2id, 2 iterations, 4096 Bytes memory, 2 threads, 32byte hash length, 16 byte salt
@@ -48,7 +48,7 @@ Output:
 
 ```nim
 import std/asyncdispatch
-import argon2_highlevel
+import argon2_highlevel/async
 
 proc main() {.async.} =
     # Create async hasher
