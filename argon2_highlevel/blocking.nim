@@ -1,5 +1,5 @@
-import std/[os, asyncdispatch, strformat, strutils, base64, options, tables]
-import private/[exceptions, enums, utils]
+import std/[strformat, strutils, base64]
+import private/[exceptions, utils]
 import ".."/argon2_lowlevel
 
 type

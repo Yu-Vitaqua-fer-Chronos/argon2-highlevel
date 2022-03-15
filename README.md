@@ -52,7 +52,7 @@ import argon2_highlevel/async
 
 proc main() {.async.} =
     # Create async hasher
-    let hasher = createAsyncArgon2(countProcessors())
+    let hasher = createAsyncArgon2()
 
     # Hash the password
     let hash = await hasher.hash("drowssap")
