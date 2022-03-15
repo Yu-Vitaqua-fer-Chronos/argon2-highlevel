@@ -1,6 +1,6 @@
 import std/[strformat, strutils, base64]
 import private/[exceptions, utils]
-import ".."/argon2_lowlevel
+import lowlevel
 
 type
     Argon2Variant* {.pure.} = enum

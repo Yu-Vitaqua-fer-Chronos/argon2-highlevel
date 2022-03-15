@@ -71,4 +71,4 @@ Output:
 
 ## Low-level API
 
-You can interface directly with the Argon2 wrapper by importing the `argon2_lowlevel` module. It has a single proc, `argon2`.
+You can interface directly with the Argon2 wrapper by importing the `argon2_highlevel/lowlevel` module. It has a single proc, `argon2`.
