@@ -16,9 +16,9 @@ proc genSalt*(len: int): string =
     else:
         return cast[string](urandom(len))
 
-var jobId = (uint32) 0;
 proc genId*(): uint32 {.inline.} =
     ## Job ID generation
     
+    var jobId {.global.} = 0u32;
     inc jobId
-    return jobId
+    jobId

@@ -85,8 +85,8 @@ proc threadProc(args: (ref AsyncArgon2, ptr Channel[Job], ptr Channel[JobRes])) 
                         kind: JobKind.Hash,
                         hashRes: hash
                     ))
-                except:
-                    job.fail(getCurrentException(), getCurrentExceptionMsg())
+                except Exception as e:
+                    job.fail(e, e.msg)
             of JobKind.Verify:
                 try:
                     # Verify and send result
@@ -96,8 +96,8 @@ proc threadProc(args: (ref AsyncArgon2, ptr Channel[Job], ptr Channel[JobRes])) 
                         kind: JobKind.Verify,
                         verifyRes: argon2Verify(job.passToVerify, job.existingHash)
                     ))
-                except:
-                    job.fail(getCurrentException(), getCurrentExceptionMsg())
+                except Exception as e:
+                    job.fail(e, e.msg)
 
 proc resRecvLoop(hasher: ref AsyncArgon2) {.async.} =
     ## Loop that checks for results and completes their corresponding futures
@@ -141,20 +141,16 @@ proc createAsyncArgon2*(threadCount: int = 1): ref AsyncArgon2 =
     hasher.executing = true
 
     # Allocate shared memory for storing channels
-    hasher.jobChan = cast[ptr Channel[Job]](
-        allocShared0(sizeof(Channel[Job]))
-    )
-    hasher.resChan = cast[ptr Channel[JobRes]](
-        allocShared0(sizeof(Channel[JobRes]))
-    )
+    hasher.jobChan = createShared(Channel[Job])
+    hasher.resChan = createShared(Channel[JobRes])
     hasher.jobChan[].open()
     hasher.resChan[].open()
 
     # Start result receiver and worker threads
     asyncCheck hasher.resRecvLoop()
     hasher.threads = newSeq[Thread[(ref AsyncArgon2, ptr Channel[Job], ptr Channel[JobRes])]](threadCount)
-    for i in 0..<threadCount:
-        createThread(hasher.threads[i], threadProc, (hasher, hasher.jobChan, hasher.resChan))
+    for thread in hasher.threads.mitems:
+        createThread(thread, threadProc, (hasher, hasher.jobChan, hasher.resChan))
 
     return hasher
 
@@ -176,8 +172,8 @@ proc destroy*(hasher: ref AsyncArgon2) =
                 fut.verifyFut.fail(err)
     
     # Free channel memory
-    deallocShared(hasher.jobChan)
-    deallocShared(hasher.resChan)
+    freeShared(hasher.jobChan)
+    freeShared(hasher.resChan)
 
 proc hash*(hasher: ref AsyncArgon2, password: string, options: Argon2Options = defaultArgon2Options): Future[string] =
     ## Hashes the provided password using the Argon2 algorithm and returns a future that will be completed with the complete encoded hash string.
