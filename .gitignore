@@ -1,3 +1,6 @@
 # Test binaries
 /tests/test1
 /tests/test2
+
+# Generated documentation
+/docs
