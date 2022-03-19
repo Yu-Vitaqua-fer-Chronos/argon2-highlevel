@@ -131,7 +131,7 @@ proc resRecvLoop(hasher: ref AsyncArgon2) {.async.} =
 
 proc createAsyncArgon2*(threadCount: int = 1): ref AsyncArgon2 =
     ## Creates a new asychronous Argon2 hasher with the specified number of executor threads (not the same as hash threads).
-    ## If you are using all of the majority of your CPU threads in your hashing options, you should only use one thread for your async hasher.
+    ## If you are using all or the majority of your CPU threads in your hashing options, you should only use one thread for your async hasher.
     ## Keep in mind that async hashers are not threadsafe, you should only use them in one thread, otherwise Futures will be completed on the wrong thread and cause more issues.
     ## Once you are done with the hasher, you need to destroy it with destroy(AsyncArgon2).
     

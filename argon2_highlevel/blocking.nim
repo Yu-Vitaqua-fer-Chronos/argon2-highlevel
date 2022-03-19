@@ -11,7 +11,7 @@ type
         ID = "id" ## Recommended (combines the Argon2d and Argon2i)
 
     Argon2Hash* = object
-        ## Object representation of an argon2 hash string's contents
+        ## Object representation of an Argon2 hash string's contents
         
         original*: string ## The original Argon2 hash string
         version*: uint32 ## The Argon2 version used
